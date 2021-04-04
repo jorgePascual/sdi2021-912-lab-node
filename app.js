@@ -14,7 +14,6 @@ let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app,mongo);
 
 
-
 // Variables
 app.set('port', 8081);
 app.set('db','mongodb://admin:sdi@tiendamusical-shard-00-00.bauxu.mongodb.net:27017,tiendamusical-shard-00-01.bauxu.mongodb.net:27017,tiendamusical-shard-00-02.bauxu.mongodb.net:27017/test?ssl=true&replicaSet=atlas-oizqub-shard-0&authSource=admin&retryWrites=true&w=majority');
