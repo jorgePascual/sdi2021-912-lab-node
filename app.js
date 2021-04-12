@@ -7,6 +7,8 @@ let mongo = require('mongodb');
 let fileUpload = require('express-fileupload');
 let crypto = require('crypto');
 let expressSession = require('express-session');
+let fs = require('fs');
+let https = require('https');
 app.use(expressSession({
     secret: 'abcdefg',
     resave: true,
@@ -114,8 +116,19 @@ app.get('/', function (req, res) {
     res.redirect('/tienda');
 })
 
+app.use(function(err, req, res, next){
+    console.log("Error producido" + err); //Mostrar error en consola
+    if(!res.headersSent) {
+        res.status(400);
+        res.send("Recurso no disponible");
+
+    }
+})
 
 // lanzar el servidor
-app.listen(app.get('port'), function(){
-    console.log('Servidor activo en puerto: ' + app.get('port'));
+https.createServer({
+    key: fs.readFileSync('certificates/alice.key'),
+    cert: fs.readFileSync('certificates/alice.crt')
+}, app).listen(app.get('port'), function() {
+    console.log("Servidor activo");
 });
