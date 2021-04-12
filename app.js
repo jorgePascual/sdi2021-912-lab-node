@@ -40,7 +40,7 @@ routerUsuarioSession.use(function(req, res, next) {
 app.use("/canciones/agregar",routerUsuarioSession);
 app.use("/publicaciones",routerUsuarioSession);
 
-/routerUsuarioAutor
+//routerUsuarioAutor
 let routerUsuarioAutor = express.Router();
 routerUsuarioAutor.use(function(req, res, next) {
     console.log("routerUsuarioAutor");
@@ -95,6 +95,11 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
 require("./routes/rcomentarios.js")(app, swig, gestorBD);
+
+app.get('/', function (req, res) {
+    res.redirect('/tienda');
+})
+
 
 // lanzar el servidor
 app.listen(app.get('port'), function(){
