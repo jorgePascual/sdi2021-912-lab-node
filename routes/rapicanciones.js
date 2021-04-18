@@ -47,29 +47,31 @@ module.exports = function(app, gestorBD) {
         });
     });
 
-    app.post("/api/cancion", function(req, res) {
-        let cancion = {
-            nombre : req.body.nombre,
-            genero : req.body.genero,
-            precio : req.body.precio,
+    app.post("/api/autenticar/", function(req, res) {
+        let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+            .update(req.body.password).digest('hex');
+        let criterio = {
+            email : req.body.email,
+            password : seguro
         }
-        // ¿Validar nombre, genero, precio?
 
-        gestorBD.insertarCancion(cancion, function(id){
-            if (id == null) {
-                res.status(500);
+        gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+            if (usuarios == null || usuarios.length == 0) {
+                res.status(401);
                 res.json({
-                    error : "se ha producido un error"
+                    autenticado : false
                 })
             } else {
-                res.status(201);
+                let token = app.get('jwt').sign(
+                    {usuario: criterio.email , tiempo: Date.now()/1000},
+                    "secreto");
+                res.status(200);
                 res.json({
-                    mensaje : "canción insertada",
-                    _id : id
-                })
+                    autenticado: true,
+                    token : token
+                });
             }
         });
-
     });
 
 }
