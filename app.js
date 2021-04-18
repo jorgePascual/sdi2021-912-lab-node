@@ -61,10 +61,13 @@ routerUsuarioAutor.use(function(req, res, next) {
         })
 });
 //Aplicar routerUsuarioAutor
+app.use("/canciones/agregar",routerUsuarioSession);
+app.use("/publicaciones",routerUsuarioSession);
 app.use("/cancion/modificar",routerUsuarioAutor);
 app.use("/cancion/eliminar",routerUsuarioAutor);
 app.use("/cancion/comprar",routerUsuarioSession);
 app.use("/compras",routerUsuarioSession);
+app.use("/api/cancion", routerUsuarioSession);
 
 
 //routerAudios
@@ -111,6 +114,8 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
 require("./routes/rcomentarios.js")(app, swig, gestorBD);
+require("./routes/rapicanciones.js")(app, gestorBD);
+
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');
@@ -123,7 +128,7 @@ app.use(function(err, req, res, next){
         res.send("Recurso no disponible");
 
     }
-})
+});
 
 // lanzar el servidor
 https.createServer({
